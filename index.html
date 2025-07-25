@@ -1,83 +1,117 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Yulvon Production</title>
-<style>
-  body {
-    background: #111;
-    color: #eee;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0; padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-  }
-  h1 {
-    font-weight: 900;
-    margin-bottom: 0.3em;
-    font-size: 2.5rem;
-  }
-  p {
-    font-size: 1.2rem;
-    margin: 0.3em 0 1.5em 0;
-    opacity: 0.8;
-  }
-  .buttons {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .btn {
-    background: #222;
-    border: 2px solid #555;
-    border-radius: 30px;
-    padding: 12px 28px;
-    color: #eee;
-    font-weight: 600;
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .btn:hover {
-    background: #eee;
-    color: #111;
-    border-color: #eee;
-  }
-  footer {
-    margin-top: auto;
-    padding: 15px;
-    font-size: 0.9rem;
-    color: #555;
-  }
-  @media (max-width: 480px) {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yulvon Production</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: black;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: url('bg.jpg') no-repeat center center/cover; /* Заменить на своё фото или видео */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    header .overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    header .content {
+      position: relative;
+      z-index: 2;
+    }
+
     h1 {
-      font-size: 2rem;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
     }
-    .btn {
-      padding: 10px 20px;
-      font-size: 1rem;
+
+    p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
     }
-  }
-</style>
+
+    a.button {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border: 2px solid white;
+      border-radius: 50px;
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    a.button:hover {
+      background: white;
+      color: black;
+    }
+
+    section {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .portfolio {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .portfolio img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .portfolio img:hover {
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
 
-<h1>Yulvon Production</h1>
-<p>Анатолий<br />Фото, видео, монтаж — сам<br />Собираю портфолио, ищу проекты</p>
+  <header>
+    <div class="overlay"></div>
+    <div class="content">
+      <h1>Yulvon Production</h1>
+      <p>Фотограф, видеограф, монтажер. Ищу проекты и создаю портфолио</p>
+      <a href="#portfolio" class="button">Портфолио</a>
+    </div>
+  </header>
 
-<div class="buttons">
-  <a class="btn" href="https://instagram.com/yulvon.pr" target="_blank" rel="noopener noreferrer">Instagram</a>
-  <a class="btn" href="https://t.me/yulvon" target="_blank" rel="noopener noreferrer">Telegram</a>
-  <a class="btn" href="https://vk.com/yulvonpr" target="_blank" rel="noopener noreferrer">ВКонтакте</a>
-</div>
-
-<footer>↓ Пиши — обсудим идею ↓</footer>
+  <section id="portfolio">
+    <h2>Портфолио</h2>
+    <div class="portfolio">
+      <!-- Сюда можно добавлять изображения вручную или автоматически -->
+      <img src="img/photo1.jpg" alt="Photo 1">
+      <img src="img/photo2.jpg" alt="Photo 2">
+      <img src="img/photo3.jpg" alt="Photo 3">
+      <img src="img/photo4.jpg" alt="Photo 4">
+    </div>
+  </section>
 
 </body>
 </html>
