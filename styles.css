@@ -1,38 +1,118 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+  scroll-behavior: smooth;
+  background: black;
+  color: white;
+}
 
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(120deg, #1e1e1e, #2a2a2a);
-    color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
-.container {
-    text-align: center;
-    padding: 20px;
+
+#bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
 }
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5em;
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
-p {
-    margin: 0.4em 0;
+
+.hero-content h1 {
+  font-size: 3em;
+  margin: 0;
+  animation: fadeInDown 1s ease-out;
 }
-.links {
-    margin-top: 1.5em;
+
+.hero-content p {
+  font-size: 1.2em;
+  margin: 10px 0 20px;
+  animation: fadeInUp 1s ease-out;
 }
-a {
-    display: inline-block;
-    margin: 0.5em;
-    padding: 0.5em 1em;
-    background: #444;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: background 0.3s;
+
+.social-links a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
 }
-a:hover {
-    background: #666;
+
+.social-links a:hover {
+  color: #00bcd4;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: #00bcd4;
+  color: black;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+#portfolio {
+  padding: 60px 20px;
+  text-align: center;
+  background: #111;
+}
+
+#portfolio h2 {
+  font-size: 2.5em;
+  margin-bottom: 40px;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.portfolio-grid img {
+  width: 100%;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.portfolio-grid img:hover {
+  transform: scale(1.05);
+}
+
+/* Анимации */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
