@@ -93,32 +93,6 @@
       text-align: center;
     }
 
-    /* Портфолио */
-    .portfolio {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .portfolio-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: 10px;
-    }
-
-    .portfolio img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .portfolio img:hover {
-      transform: scale(1.05);
-    }
-
     /* Контакты */
     .contacts {
       background: #111;
@@ -225,29 +199,10 @@
       <h1>Yulvon Production</h1>
       <p>Фотограф, видеограф, монтажер. Ищу проекты и создаю портфолио</p>
       <div class="buttons">
-        <a href="#portfolio" class="button">Портфолио</a>
         <a href="#contacts" class="button">Контакты</a>
       </div>
     </div>
   </header>
-
-  <section id="portfolio">
-    <h2>Портфолио</h2>
-    <div class="portfolio">
-      <div class="portfolio-item">
-        <img src="img/photo1.jpg" alt="Фото проекта 1">
-      </div>
-      <div class="portfolio-item">
-        <img src="img/photo2.jpg" alt="Фото проекта 2">
-      </div>
-      <div class="portfolio-item">
-        <img src="img/photo3.jpg" alt="Фото проекта 3">
-      </div>
-      <div class="portfolio-item">
-        <img src="img/photo4.jpg" alt="Фото проекта 4">
-      </div>
-    </div>
-  </section>
 
   <section id="contacts" class="contacts">
     <h2>Свяжитесь со мной</h2>
