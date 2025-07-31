@@ -21,65 +21,28 @@
       scroll-behavior: smooth;
     }
 
-    /* Бегущая строка с улучшенными звездами */
+    /* Бегущая строка (старый вариант) */
     .marquee {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      padding: 12px 0;
+      font-weight: bold;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: 50px;
-      background: rgba(0, 0, 0, 0.85);
       z-index: 1000;
-      overflow: hidden;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .marquee-container {
-      position: relative;
-      height: 100%;
       white-space: nowrap;
+      overflow: hidden;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(2px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .marquee-text {
+    .marquee span {
       display: inline-block;
       padding-left: 100%;
-      animation: marquee 20s linear infinite;
-      line-height: 50px;
-      font-weight: bold;
-      color: white;
-      font-size: 18px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .stars {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle 3s infinite ease-in-out;
-      opacity: 0;
-      box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
-    }
-
-    .star::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 150%;
-      height: 150%;
-      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-      transform: translate(-50%, -50%);
+      animation: marquee 15s linear infinite;
     }
 
     @keyframes marquee {
@@ -87,16 +50,6 @@
       100% { transform: translateX(-100%); }
     }
 
-    @keyframes twinkle {
-      0% { opacity: 0; transform: scale(0.3); }
-      20% { opacity: 0.9; transform: scale(1); }
-      40% { opacity: 0.9; transform: scale(1); }
-      60% { opacity: 0.5; transform: scale(0.8); }
-      80% { opacity: 0.2; transform: scale(0.5); }
-      100% { opacity: 0; transform: scale(0.3); }
-    }
-
-    /* Остальные стили остаются без изменений */
     header {
       position: relative;
       width: 100vw;
@@ -132,21 +85,161 @@
       letter-spacing: 2px;
     }
 
-    /* ... остальные стили остаются без изменений ... */
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 2rem;
+      color: #fff;
+    }
 
+    p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 0.8rem 2.2rem;
+      border: 2px solid white;
+      border-radius: 50px;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      background: rgba(0,0,0,0.3);
+    }
+
+    a.button:hover {
+      background: white;
+      color: black;
+      transform: translateY(-3px);
+    }
+
+    section {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    /* Связь */
+    .contacts {
+      background: #000;
+      color: white;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .social-links a {
+      color: white;
+      font-size: 2rem;
+      transition: 0.3s;
+    }
+
+    .social-links a:hover {
+      transform: translateY(-3px);
+    }
+
+    .vk:hover { color: #4a76a8; }
+    .instagram:hover { color: #e1306c; }
+    .telegram:hover { color: #0088cc; }
+
+    /* Форма */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      background: rgba(20, 20, 20, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      border: 1px solid #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #444;
+      color: white;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .form-group textarea {
+      height: 150px;
+      resize: vertical;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(to right, #ff8a00, #e52e71);
+      border: none;
+      padding: 12px 30px;
+      color: white;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .success-message {
+      display: none;
+      color: #4BB543;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.8rem;
+      }
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .contact-form {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Бегущая строка с улучшенными звездами -->
+  <!-- Бегущая строка (старый вариант без смайлов) -->
   <div class="marquee">
-    <div class="marquee-container">
-      <div class="stars" id="stars"></div>
-      <div class="marquee-text">✨ САЙТ НАХОДИТСЯ НА ДОРАБОТКЕ ✨ &nbsp;&nbsp;&nbsp; ✨ САЙТ НАХОДИТСЯ НА ДОРАБОТКЕ ✨</div>
-    </div>
+    <span>САЙТ НАХОДИТСЯ НА ДОРАБОТКЕ</span>
   </div>
 
-  <!-- Остальная часть HTML остается без изменений -->
   <header>
     <div class="overlay"></div>
     <div class="content">
@@ -190,62 +283,6 @@
   </section>
 
   <script>
-    // Улучшенные звезды с разными размерами и формами
-    function createStars() {
-      const starsContainer = document.getElementById('stars');
-      const width = window.innerWidth;
-      const height = 50; // Высота бегущей строки
-      const count = Math.floor(width / 15); // Больше звезд
-    
-      // Очищаем контейнер
-      starsContainer.innerHTML = '';
-    
-      // Создаем звезды
-      for (let i = 0; i < count; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        
-        // Случайные параметры
-        const size = Math.random() * 5 + 2; // Большие звезды (2-7px)
-        const left = Math.random() * width;
-        const top = Math.random() * height;
-        const delay = Math.random() * 5;
-        const duration = Math.random() * 3 + 2; // Более плавное мерцание
-        
-        // Форма звезды (круг или крестик)
-        const starType = Math.random() > 0.7 ? 'cross' : 'circle';
-        
-        if (starType === 'cross') {
-          star.style.borderRadius = '0';
-          star.style.width = `${size}px`;
-          star.style.height = `${size}px`;
-          star.style.transform = 'rotate(45deg)';
-          star.style.boxShadow = '0 0 15px 3px rgba(255, 255, 255, 0.8)';
-        } else {
-          star.style.borderRadius = '50%';
-          star.style.width = `${size}px`;
-          star.style.height = `${size}px`;
-        }
-        
-        // Позиционирование
-        star.style.left = `${left}px`;
-        star.style.top = `${top}px`;
-        star.style.animationDelay = `${delay}s`;
-        star.style.animationDuration = `${duration}s`;
-        
-        // Цвет (случайный оттенок белого/голубого)
-        const hue = 200 + Math.random() * 40; // Голубоватые оттенки
-        star.style.background = `hsla(${hue}, 100%, 80%, 0.9)`;
-        
-        starsContainer.appendChild(star);
-      }
-    }
-    
-    // Инициализация звезд
-    window.addEventListener('load', createStars);
-    window.addEventListener('resize', createStars);
-
-    // Остальной JavaScript код остается без изменений
     const form = document.getElementById('tgForm');
     const successMessage = document.getElementById('successMessage');
     const submitBtn = form.querySelector('button[type="submit"]');
