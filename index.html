@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yulvon Production</title>
+  <title>YULVON PRODUCTION</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -23,9 +23,9 @@
 
     /* Бегущая строка */
     .marquee {
-      background: #ff0000;
+      background: rgba(255, 255, 255, 0.15);
       color: white;
-      padding: 10px 0;
+      padding: 12px 0;
       font-weight: bold;
       position: fixed;
       top: 0;
@@ -34,6 +34,9 @@
       z-index: 1000;
       white-space: nowrap;
       overflow: hidden;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(2px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .marquee span {
@@ -51,8 +54,8 @@
       position: relative;
       width: 100vw;
       height: 100vh;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                  url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url('https://pics.photographer.ru/nonstop/pics/big/844/844928.jpg') no-repeat center center/cover;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -77,6 +80,9 @@
       font-weight: 700;
       margin-bottom: 1rem;
       text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      color: #d2b48c; /* Цвет сепия */
+      text-transform: uppercase;
+      letter-spacing: 2px;
     }
 
     h2 {
@@ -122,8 +128,7 @@
 
     /* Связь */
     .contacts {
-      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                  url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      background: #000;
       color: white;
     }
 
@@ -153,10 +158,10 @@
       max-width: 600px;
       margin: 0 auto;
       position: relative;
-      background: rgba(0,0,0,0.7);
+      background: rgba(20, 20, 20, 0.9);
       padding: 30px;
       border-radius: 15px;
-      backdrop-filter: blur(5px);
+      border: 1px solid #333;
     }
 
     .form-group {
@@ -232,13 +237,13 @@
 
   <!-- Бегущая строка -->
   <div class="marquee">
-    <span>⚠️ Сайт находится на доработке ⚠️</span>
+    <span>✨ САЙТ НАХОДИТСЯ НА ДОРАБОТКЕ ✨</span>
   </div>
 
   <header>
     <div class="overlay"></div>
     <div class="content">
-      <h1>Yulvon Production</h1>
+      <h1>YULVON PRODUCTION</h1>
       <p>Фотограф, видеограф, монтажер. Ищу проекты и создаю портфолио</p>
       <div class="buttons">
         <a href="#contacts" class="button">Связь</a>
