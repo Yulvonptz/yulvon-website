@@ -21,7 +21,7 @@
       scroll-behavior: smooth;
     }
 
-    /* Бегущая строка с текстом */
+    /* Бегущая строка с звездами */
     .marquee {
       position: fixed;
       top: 0;
@@ -49,12 +49,34 @@
       font-weight: bold;
     }
 
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 1.5s infinite alternate;
+      opacity: 0;
+    }
+
     @keyframes marquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
 
-    /* Стиль для хедера */
+    @keyframes twinkle {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 0.8; }
+      100% { opacity: 0; transform: scale(1.2); }
+    }
+
     header {
       position: relative;
       width: 100vw;
@@ -78,7 +100,6 @@
       z-index: 2;
       max-width: 800px;
       padding: 0 20px;
-      text-align: center;
     }
 
     h1 {
@@ -91,13 +112,25 @@
       letter-spacing: 2px;
     }
 
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 2rem;
+      color: #fff;
+    }
+
     p {
       font-size: clamp(1rem, 2vw, 1.25rem);
       margin-bottom: 2rem;
       line-height: 1.6;
     }
 
-    .button {
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    a.button {
       display: inline-block;
       padding: 0.8rem 2.2rem;
       border: 2px solid white;
@@ -109,16 +142,38 @@
       background: rgba(0,0,0,0.3);
     }
 
-    .button:hover {
+    a.button:hover {
       background: white;
       color: black;
       transform: translateY(-3px);
     }
 
-    /* Контакты */
-    .contacts {
+    section {
       padding: 80px 20px;
       text-align: center;
+    }
+
+    /* Связь */
+    .contacts {
+      background: #000;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contacts-stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .contacts-content {
+      position: relative;
+      z-index: 1;
     }
 
     .social-links {
@@ -126,6 +181,8 @@
       justify-content: center;
       gap: 20px;
       margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
     }
 
     .social-links a {
@@ -198,13 +255,37 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
+    .success-message {
+      display: none;
+      color: #4BB543;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.8rem;
+      }
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .contact-form {
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Бегущая строка с текстом -->
+  <!-- Бегущая строка с звездами -->
   <div class="marquee">
     <div class="marquee-container">
+      <div class="stars" id="stars"></div>
       <div class="marquee-text">САЙТ НАХОДИТСЯ НА ДОРАБОТКЕ</div>
     </div>
   </div>
@@ -212,42 +293,138 @@
   <header>
     <div class="overlay"></div>
     <div class="content">
-      <h1>Zane Lee</h1>
-      <p>Services of a professional photographer, attraction of the best specialists to the shooting. The solution of creative and organizational tasks of any complexity.</p>
-      <a href="#contacts" class="button">Hire me</a>
+      <h1>YULVON PRODUCTION</h1>
+      <p>Фотограф, видеограф, монтажер. Ищу проекты и создаю портфолио</p>
+      <div class="buttons">
+        <a href="#contacts" class="button">Связь</a>
+      </div>
     </div>
   </header>
 
   <section id="contacts" class="contacts">
-    <h2>Контакты</h2>
+    <div class="contacts-stars" id="contactsStars"></div>
+    <div class="contacts-content">
+      <h2>Связь</h2>
+      
+      <div class="social-links">
+        <a href="https://vk.com/yulvonpr" target="_blank" class="vk"><i class="fab fa-vk"></i></a>
+        <a href="https://www.instagram.com/yulvon.pr?igsh=b3VzbzZjamozdHFk&utm_source=qr" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://t.me/yulvon" target="_blank" class="telegram"><i class="fab fa-telegram"></i></a>
+      </div>
 
-    <div class="social-links">
-      <a href="https://vk.com" target="_blank" class="vk"><i class="fab fa-vk"></i></a>
-      <a href="https://www.instagram.com" target="_blank" class="instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://t.me" target="_blank" class="telegram"><i class="fab fa-telegram"></i></a>
-    </div>
-
-    <div class="contact-form">
-      <form id="tgForm">
-        <div class="form-group">
-          <label for="name">Ваше имя</label>
-          <input type="text" id="name" name="name" required placeholder="Как вас зовут?">
+      <div class="contact-form">
+        <form id="tgForm">
+          <div class="form-group">
+            <label for="name">Ваше имя</label>
+            <input type="text" id="name" name="name" required placeholder="Как вас зовут?">
+          </div>
+          <div class="form-group">
+            <label for="contact">Email или телефон</label>
+            <input type="text" id="contact" name="contact" required placeholder="Как с вами связаться?">
+          </div>
+          <div class="form-group">
+            <label for="message">Сообщение</label>
+            <textarea id="message" name="message" required placeholder="Расскажите о вашем проекте"></textarea>
+          </div>
+          <button type="submit" class="button">Отправить сообщение</button>
+        </form>
+        <div class="success-message" id="successMessage">
+          Сообщение отправлено! Я свяжусь с вами в ближайшее время.
         </div>
-        <div class="form-group">
-          <label for="contact">Email или телефон</label>
-          <input type="text" id="contact" name="contact" required placeholder="Как с вами связаться?">
-        </div>
-        <div class="form-group">
-          <label for="message">Сообщение</label>
-          <textarea id="message" name="message" required placeholder="Расскажите о вашем проекте"></textarea>
-        </div>
-        <button type="submit" class="button">Отправить сообщение</button>
-      </form>
+      </div>
     </div>
   </section>
 
   <script>
-    // Добавление функционала для кнопки прокрутки страницы
+    // Создаем звездочки для бегущей строки
+    function createStars(containerId, countMultiplier = 1, sizeMultiplier = 1) {
+      const starsContainer = document.getElementById(containerId);
+      const width = window.innerWidth;
+      const height = containerId === 'stars' ? 40 : document.querySelector('.contacts').offsetHeight;
+      const count = Math.floor(width / 20) * countMultiplier;
+    
+      starsContainer.innerHTML = '';
+    
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        const size = Math.random() * 1 * sizeMultiplier + 0.5;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 2 + 1;
+        
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${left}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${delay}s`;
+        star.style.animationDuration = `${duration}s`;
+        
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    // Инициализация звезд
+    window.addEventListener('load', function() {
+      createStars('stars', 1, 1); // Для бегущей строки
+      createStars('contactsStars', 3, 0.7); // Для блока контактов (больше звезд и мельче)
+    });
+    
+    window.addEventListener('resize', function() {
+      createStars('stars', 1, 1);
+      createStars('contactsStars', 3, 0.7);
+    });
+
+    const form = document.getElementById('tgForm');
+    const successMessage = document.getElementById('successMessage');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Отправка...';
+      
+      try {
+        const botToken = '7819746429:AAGMPElulQIPP52CG3eLIwdGQLei68CL61Y';
+        const chatId = '5186331498';
+        
+        const text = `📩 <b>Новая заявка с сайта</b>\n\n` +
+                    `👤 <b>Имя:</b> ${form.name.value}\n` +
+                    `📞 <b>Контакты:</b> ${form.contact.value}\n\n` +
+                    `📝 <b>Сообщение:</b>\n${form.message.value}`;
+        
+        const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: text,
+            parse_mode: 'HTML'
+          })
+        });
+        
+        if (response.ok) {
+          form.reset();
+          successMessage.style.display = 'block';
+          setTimeout(() => {
+            successMessage.style.display = 'none';
+          }, 5000);
+        } else {
+          alert('Ошибка отправки. Пожалуйста, напишите мне в Telegram.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Произошла ошибка. Попробуйте позже или свяжитесь другим способом.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Отправить сообщение';
+      }
+    });
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
