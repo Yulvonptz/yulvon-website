@@ -436,7 +436,7 @@
   </script>
 <!-- Админка (шестерёнка + модальное окно) -->
 <div id="admin-panel" style="position:fixed;bottom:20px;right:20px;z-index:9999;">
-  <a href="#" style="color:#fff;font-size:24px;opacity:0.7;transition:0.3s;" onmouseover="this.style.opacity=1;this.style.transform='rotate(90deg)'" onmouseout="this.style.opacity=0.7;this.style.transform='rotate(0)'">
+  <a href="#" id="admin-btn" style="color:#fff;font-size:24px;opacity:0.7;transition:0.3s;" onmouseover="this.style.opacity=1;this.style.transform='rotate(90deg)'" onmouseout="this.style.opacity=0.7;this.style.transform='rotate(0)'">
     <i class="fas fa-cog"></i>
   </a>
 </div>
@@ -446,44 +446,67 @@
   <div style="background:#111;padding:30px;border-radius:10px;max-width:400px;width:100%;text-align:center;border:1px solid #333;">
     <h3 style="margin-bottom:20px;color:#fff;">Вход в админку</h3>
     <input type="password" id="admin-password" placeholder="Пароль" style="width:100%;padding:10px;margin-bottom:15px;background:#222;color:#fff;border:1px solid #444;border-radius:5px;">
-    <button onclick="checkAdminPassword()" style="background:#333;color:#fff;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Войти</button>
+    <button id="admin-login-btn" style="background:#333;color:#fff;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Войти</button>
     <p id="admin-error" style="color:red;margin-top:10px;display:none;">Неверный пароль!</p>
   </div>
 </div>
 
-<!-- Скрытая админ-панель (появится после ввода пароля) -->
+<!-- Скрытая админ-панель -->
 <div id="real-admin-panel" style="display:none;position:fixed;bottom:70px;right:20px;background:#111;padding:15px;border-radius:8px;border:1px solid #333;z-index:9998;">
   <p style="color:#fff;margin-bottom:10px;">Админ-панель</p>
-  <button style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Настройки</button>
-  <button style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Выйти</button>
+  <button id="admin-settings-btn" style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Настройки</button>
+  <button id="admin-logout-btn" style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Выйти</button>
 </div>
 
 <script>
-  // Открытие модалки при клике на шестерёнку
-  document.querySelector('#admin-panel a').addEventListener('click', function(e) {
+  // Пароль (можно заменить на хэш в будущем)
+  const ADMIN_PASSWORD = "Spdspd25";
+
+  // Элементы
+  const adminBtn = document.getElementById('admin-btn');
+  const adminModal = document.getElementById('admin-modal');
+  const adminPasswordInput = document.getElementById('admin-password');
+  const adminLoginBtn = document.getElementById('admin-login-btn');
+  const adminError = document.getElementById('admin-error');
+  const realAdminPanel = document.getElementById('real-admin-panel');
+  const adminSettingsBtn = document.getElementById('admin-settings-btn');
+  const adminLogoutBtn = document.getElementById('admin-logout-btn');
+
+  // Открытие модалки по клику на шестерёнку
+  adminBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    document.getElementById('admin-modal').style.display = 'flex';
-    document.getElementById('admin-error').style.display = 'none';
-    document.getElementById('admin-password').value = '';
+    adminModal.style.display = 'flex';
+    adminError.style.display = 'none';
+    adminPasswordInput.value = '';
   });
 
   // Проверка пароля
-  function checkAdminPassword() {
-    const password = document.getElementById('admin-password').value;
-    if (password === 'Spdspd25') {
-      // Закрываем модальное окно
-      document.getElementById('admin-modal').style.display = 'none';
-      // Показываем настоящую админ-панель
-      document.getElementById('real-admin-panel').style.display = 'block';
+  adminLoginBtn.addEventListener('click', () => {
+    if (adminPasswordInput.value === ADMIN_PASSWORD) {
+      adminModal.style.display = 'none';
+      realAdminPanel.style.display = 'block';
     } else {
-      document.getElementById('admin-error').style.display = 'block';
+      adminError.style.display = 'block';
     }
-  }
+  });
 
-  // Выход из админки (добавьте эту функцию к кнопке "Выйти" если нужно)
-  function adminLogout() {
-    document.getElementById('real-admin-panel').style.display = 'none';
-  }
+  // Кнопка "Настройки"
+  adminSettingsBtn.addEventListener('click', () => {
+    alert('Раздел "Настройки" в разработке');
+    // Здесь можно добавить реальный функционал
+  });
+
+  // Кнопка "Выйти"
+  adminLogoutBtn.addEventListener('click', () => {
+    realAdminPanel.style.display = 'none';
+  });
+
+  // Закрытие модалки при клике вне её области
+  adminModal.addEventListener('click', (e) => {
+    if (e.target === adminModal) {
+      adminModal.style.display = 'none';
+    }
+  });
 </script>
 </body>
 </html>
