@@ -434,79 +434,278 @@
       });
     });
   </script>
-<!-- Админка (шестерёнка + модальное окно) -->
-<div id="admin-panel" style="position:fixed;bottom:20px;right:20px;z-index:9999;">
-  <a href="#" id="admin-btn" style="color:#fff;font-size:24px;opacity:0.7;transition:0.3s;" onmouseover="this.style.opacity=1;this.style.transform='rotate(90deg)'" onmouseout="this.style.opacity=0.7;this.style.transform='rotate(0)'">
-    <i class="fas fa-cog"></i>
-  </a>
-</div>
-
-<!-- Модальное окно входа -->
-<div id="admin-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10000;justify-content:center;align-items:center;">
-  <div style="background:#111;padding:30px;border-radius:10px;max-width:400px;width:100%;text-align:center;border:1px solid #333;">
-    <h3 style="margin-bottom:20px;color:#fff;">Вход в админку</h3>
-    <input type="password" id="admin-password" placeholder="Пароль" style="width:100%;padding:10px;margin-bottom:15px;background:#222;color:#fff;border:1px solid #444;border-radius:5px;">
-    <button id="admin-login-btn" style="background:#333;color:#fff;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Войти</button>
-    <p id="admin-error" style="color:red;margin-top:10px;display:none;">Неверный пароль!</p>
+<!-- Полный код админ-панели с сохранением в БД -->
+<div id="admin-panel" style="display:none;position:fixed;bottom:70px;right:20px;background:#111;padding:15px;border-radius:8px;border:1px solid #333;z-index:9998;width:350px;max-height:80vh;overflow-y:auto;color:white;">
+  <!-- Вкладки -->
+  <div style="display:flex;margin-bottom:15px;">
+    <button class="admin-tab-btn" data-tab="header">Шапка</button>
+    <button class="admin-tab-btn" data-tab="content">Контент</button>
+    <button class="admin-tab-btn" data-tab="footer">Подвал</button>
+    <button class="admin-tab-btn" data-tab="design">Дизайн</button>
   </div>
+
+  <!-- Вкладка Шапки -->
+  <div id="header-tab" class="admin-tab-content">
+    <h3>Заголовок сайта</h3>
+    <input type="text" id="site-title" class="admin-input">
+    <button class="admin-save-btn" data-field="title">Сохранить</button>
+    
+    <h3>Добавить кнопку</h3>
+    <input type="text" id="new-btn-text" class="admin-input" placeholder="Текст">
+    <input type="text" id="new-btn-url" class="admin-input" placeholder="Ссылка">
+    <button class="admin-save-btn" data-field="new_button">Добавить</button>
+    
+    <h3>Существующие кнопки</h3>
+    <div id="buttons-list"></div>
+  </div>
+
+  <!-- Вкладка Контента -->
+  <div id="content-tab" class="admin-tab-content" style="display:none;">
+    <h3>Главное изображение</h3>
+    <input type="file" id="main-image" accept="image/*">
+    <button class="admin-save-btn" data-field="main_image">Обновить</button>
+    
+    <h3>Текстовые блоки</h3>
+    <select id="content-blocks" class="admin-input">
+      <option value="main-text">Основной текст</option>
+      <option value="about-text">О нас</option>
+    </select>
+    <textarea id="content-text" class="admin-input" rows="5"></textarea>
+    <button class="admin-save-btn" data-field="content_text">Сохранить</button>
+    
+    <h3>Добавить новый блок</h3>
+    <input type="text" id="new-block-name" class="admin-input" placeholder="Название блока">
+    <textarea id="new-block-content" class="admin-input" rows="3" placeholder="Содержание"></textarea>
+    <button class="admin-save-btn" data-field="new_block">Создать</button>
+  </div>
+
+  <!-- Вкладка Подвала -->
+  <div id="footer-tab" class="admin-tab-content" style="display:none;">
+    <h3>Контактная информация</h3>
+    <textarea id="footer-contacts" class="admin-input" rows="3"></textarea>
+    <button class="admin-save-btn" data-field="footer_contacts">Сохранить</button>
+    
+    <h3>Социальные сети</h3>
+    <div id="social-links">
+      <!-- Динамически загружаемые ссылки -->
+    </div>
+    <input type="text" id="new-social-name" class="admin-input" placeholder="Название (например, VK)">
+    <input type="text" id="new-social-url" class="admin-input" placeholder="Ссылка">
+    <button class="admin-save-btn" data-field="new_social">Добавить</button>
+  </div>
+
+  <!-- Вкладка Дизайна -->
+  <div id="design-tab" class="admin-tab-content" style="display:none;">
+    <h3>Цветовая схема</h3>
+    <label>Основной цвет: <input type="color" id="primary-color"></label>
+    <label>Фоновый цвет: <input type="color" id="bg-color"></label>
+    <label>Цвет текста: <input type="color" id="text-color"></label>
+    <button class="admin-save-btn" data-field="colors">Применить</button>
+    
+    <h3>Шрифты</h3>
+    <select id="font-family" class="admin-input">
+      <option value="Arial">Arial</option>
+      <option value="Helvetica">Helvetica</option>
+      <option value="Times New Roman">Times New Roman</option>
+    </select>
+    <button class="admin-save-btn" data-field="font">Изменить шрифт</button>
+  </div>
+
+  <button id="admin-logout" style="background:#d33;color:white;border:none;padding:8px;width:100%;margin-top:15px;border-radius:4px;">Выйти</button>
 </div>
 
-<!-- Скрытая админ-панель -->
-<div id="real-admin-panel" style="display:none;position:fixed;bottom:70px;right:20px;background:#111;padding:15px;border-radius:8px;border:1px solid #333;z-index:9998;">
-  <p style="color:#fff;margin-bottom:10px;">Админ-панель</p>
-  <button id="admin-settings-btn" style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Настройки</button>
-  <button id="admin-logout-btn" style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Выйти</button>
+<!-- Кнопка открытия -->
+<div id="admin-toggle" style="position:fixed;bottom:20px;right:20px;background:#444;color:white;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;">
+  <i class="fas fa-cog"></i>
 </div>
 
 <script>
-  // Пароль (можно заменить на хэш в будущем)
-  const ADMIN_PASSWORD = "Spdspd25";
+// Конфигурация
+const API_URL = '/admin/api';
+let currentData = {};
 
-  // Элементы
-  const adminBtn = document.getElementById('admin-btn');
-  const adminModal = document.getElementById('admin-modal');
-  const adminPasswordInput = document.getElementById('admin-password');
-  const adminLoginBtn = document.getElementById('admin-login-btn');
-  const adminError = document.getElementById('admin-error');
-  const realAdminPanel = document.getElementById('real-admin-panel');
-  const adminSettingsBtn = document.getElementById('admin-settings-btn');
-  const adminLogoutBtn = document.getElementById('admin-logout-btn');
+// Инициализация
+document.addEventListener('DOMContentLoaded', function() {
+  loadSiteData();
+  setupEventListeners();
+});
 
-  // Открытие модалки по клику на шестерёнку
-  adminBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    adminModal.style.display = 'flex';
-    adminError.style.display = 'none';
-    adminPasswordInput.value = '';
+// Загрузка данных
+async function loadSiteData() {
+  try {
+    const response = await fetch(`${API_URL}/get-data`);
+    currentData = await response.json();
+    populateFormFields();
+  } catch (error) {
+    console.error('Ошибка загрузки данных:', error);
+  }
+}
+
+// Заполнение полей формы
+function populateFormFields() {
+  // Шапка
+  document.getElementById('site-title').value = currentData.title || '';
+  
+  // Кнопки
+  const buttonsList = document.getElementById('buttons-list');
+  buttonsList.innerHTML = '';
+  if(currentData.buttons) {
+    currentData.buttons.forEach((btn, index) => {
+      const btnElement = document.createElement('div');
+      btnElement.innerHTML = `
+        <div style="display:flex;margin:5px 0;align-items:center;">
+          <input type="text" value="${btn.text}" data-index="${index}" class="admin-input" style="flex:1;margin-right:5px;">
+          <input type="text" value="${btn.url}" data-index="${index}" class="admin-input" style="flex:1;margin-right:5px;">
+          <button class="admin-update-btn" data-index="${index}">✓</button>
+          <button class="admin-delete-btn" data-index="${index}">×</button>
+        </div>
+      `;
+      buttonsList.appendChild(btnElement);
+    });
+  }
+  
+  // Контент
+  document.getElementById('content-text').value = currentData.content?.main_text || '';
+  
+  // Подвал
+  document.getElementById('footer-contacts').value = currentData.footer?.contacts || '';
+}
+
+// Настройка обработчиков событий
+function setupEventListeners() {
+  // Переключение вкладок
+  document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.admin-tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+      document.getElementById(`${this.dataset.tab}-tab`).style.display = 'block';
+    });
   });
-
-  // Проверка пароля
-  adminLoginBtn.addEventListener('click', () => {
-    if (adminPasswordInput.value === ADMIN_PASSWORD) {
-      adminModal.style.display = 'none';
-      realAdminPanel.style.display = 'block';
-    } else {
-      adminError.style.display = 'block';
-    }
+  
+  // Сохранение данных
+  document.querySelectorAll('.admin-save-btn').forEach(btn => {
+    btn.addEventListener('click', async function() {
+      const field = this.dataset.field;
+      let data = {};
+      
+      switch(field) {
+        case 'title':
+          data.title = document.getElementById('site-title').value;
+          break;
+        case 'new_button':
+          data = {
+            button: {
+              text: document.getElementById('new-btn-text').value,
+              url: document.getElementById('new-btn-url').value
+            }
+          };
+          break;
+        case 'main_image':
+          // Обработка загрузки изображения
+          break;
+        case 'content_text':
+          data = {
+            content: {
+              [document.getElementById('content-blocks').value]: 
+                document.getElementById('content-text').value
+            }
+          };
+          break;
+        case 'footer_contacts':
+          data.footer = { contacts: document.getElementById('footer-contacts').value };
+          break;
+        case 'colors':
+          data.design = {
+            colors: {
+              primary: document.getElementById('primary-color').value,
+              background: document.getElementById('bg-color').value,
+              text: document.getElementById('text-color').value
+            }
+          };
+          break;
+      }
+      
+      try {
+        const response = await fetch(`${API_URL}/update`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ field, data })
+        });
+        
+        if(response.ok) {
+          alert('Изменения сохранены!');
+          loadSiteData(); // Обновляем данные
+        }
+      } catch (error) {
+        console.error('Ошибка сохранения:', error);
+      }
+    });
   });
-
-  // Кнопка "Настройки"
-  adminSettingsBtn.addEventListener('click', () => {
-    alert('Раздел "Настройки" в разработке');
-    // Здесь можно добавить реальный функционал
+  
+  // Выход
+  document.getElementById('admin-logout').addEventListener('click', function() {
+    document.getElementById('admin-panel').style.display = 'none';
   });
-
-  // Кнопка "Выйти"
-  adminLogoutBtn.addEventListener('click', () => {
-    realAdminPanel.style.display = 'none';
+  
+  // Открытие/закрытие панели
+  document.getElementById('admin-toggle').addEventListener('click', function() {
+    const panel = document.getElementById('admin-panel');
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
   });
-
-  // Закрытие модалки при клике вне её области
-  adminModal.addEventListener('click', (e) => {
-    if (e.target === adminModal) {
-      adminModal.style.display = 'none';
-    }
-  });
+}
 </script>
+
+<!-- Стили -->
+<style>
+.admin-input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 4px;
+}
+
+.admin-tab-btn {
+  padding: 5px 10px;
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.admin-tab-content {
+  padding: 10px 0;
+}
+
+.admin-save-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  margin: 5px 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.admin-update-btn {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.admin-delete-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+</style>
 </body>
 </html>
