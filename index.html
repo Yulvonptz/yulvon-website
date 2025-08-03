@@ -459,8 +459,20 @@
 </div>
 
 <script>
-  // Пароль (можно заменить на хэш в будущем)
-  const ADMIN_PASSWORD = "Spdspd25";
+  // Защита от просмотра в F12
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+  
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.shiftKey && e.key === 'J') || (e.ctrlKey && e.key === 'U')) {
+      e.preventDefault();
+      alert('Доступ запрещен');
+    }
+  });
+
+  // Хэшированный пароль (SHA-256)
+  const ADMIN_PASSWORD_HASH = "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4";
 
   // Элементы
   const adminBtn = document.getElementById('admin-btn');
@@ -472,8 +484,16 @@
   const adminSettingsBtn = document.getElementById('admin-settings-btn');
   const adminLogoutBtn = document.getElementById('admin-logout-btn');
 
+  // Функция для хэширования SHA-256
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
   // Открытие модалки по клику на шестерёнку
-  adminBtn.addEventListener('click', (e) => {
+  adminBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     adminModal.style.display = 'flex';
     adminError.style.display = 'none';
@@ -481,24 +501,35 @@
   });
 
   // Проверка пароля
-  adminLoginBtn.addEventListener('click', () => {
-    if (adminPasswordInput.value === ADMIN_PASSWORD) {
+  adminLoginBtn.addEventListener('click', async () => {
+    const inputHash = await sha256(adminPasswordInput.value);
+    if (inputHash === ADMIN_PASSWORD_HASH) {
       adminModal.style.display = 'none';
       realAdminPanel.style.display = 'block';
+      
+      // Сохраняем сессию
+      sessionStorage.setItem('admin-authenticated', 'true');
     } else {
       adminError.style.display = 'block';
+    }
+  });
+
+  // Проверка аутентификации при загрузке
+  window.addEventListener('load', () => {
+    if (sessionStorage.getItem('admin-authenticated') === 'true') {
+      realAdminPanel.style.display = 'block';
     }
   });
 
   // Кнопка "Настройки"
   adminSettingsBtn.addEventListener('click', () => {
     alert('Раздел "Настройки" в разработке');
-    // Здесь можно добавить реальный функционал
   });
 
   // Кнопка "Выйти"
   adminLogoutBtn.addEventListener('click', () => {
     realAdminPanel.style.display = 'none';
+    sessionStorage.removeItem('admin-authenticated');
   });
 
   // Закрытие модалки при клике вне её области
