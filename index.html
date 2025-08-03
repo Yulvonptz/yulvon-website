@@ -434,110 +434,131 @@
       });
     });
   </script>
-<!-- Админка (шестерёнка + модальное окно) -->
-<div id="admin-panel" style="position:fixed;bottom:20px;right:20px;z-index:9999;">
-  <a href="#" id="admin-btn" style="color:#fff;font-size:24px;opacity:0.7;transition:0.3s;" onmouseover="this.style.opacity=1;this.style.transform='rotate(90deg)'" onmouseout="this.style.opacity=0.7;this.style.transform='rotate(0)'">
-    <i class="fas fa-cog"></i>
-  </a>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Админ-панель</title>
+  <style>
+    #admin-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 9999;
+    }
+    #admin-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    .modal-content {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      width: 200px;
+    }
+    #admin-panel {
+      display: none;
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background: #111;
+      padding: 15px;
+      border-radius: 8px;
+      z-index: 9998;
+    }
+  </style>
+</head>
+<body>
 
-<!-- Модальное окно входа -->
-<div id="admin-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10000;justify-content:center;align-items:center;">
-  <div style="background:#111;padding:30px;border-radius:10px;max-width:400px;width:100%;text-align:center;border:1px solid #333;">
-    <h3 style="margin-bottom:20px;color:#fff;">Вход в админку</h3>
-    <input type="password" id="admin-password" placeholder="Пароль" style="width:100%;padding:10px;margin-bottom:15px;background:#222;color:#fff;border:1px solid #444;border-radius:5px;">
-    <button id="admin-login-btn" style="background:#333;color:#fff;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Войти</button>
-    <p id="admin-error" style="color:red;margin-top:10px;display:none;">Неверный пароль!</p>
+<!-- Кнопка админки -->
+<div id="admin-btn">⚙️</div>
+
+<!-- Модалка ввода пароля -->
+<div id="admin-modal">
+  <div class="modal-content">
+    <h3>Вход в админку</h3>
+    <input type="password" id="admin-password" placeholder="Пароль">
+    <button id="login-btn">Войти</button>
+    <p id="error-msg" style="color: red; display: none;">Неверный пароль!</p>
   </div>
 </div>
 
 <!-- Скрытая админ-панель -->
-<div id="real-admin-panel" style="display:none;position:fixed;bottom:70px;right:20px;background:#111;padding:15px;border-radius:8px;border:1px solid #333;z-index:9998;">
-  <p style="color:#fff;margin-bottom:10px;">Админ-панель</p>
-  <button id="admin-settings-btn" style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Настройки</button>
-  <button id="admin-logout-btn" style="background:#333;color:#fff;border:none;padding:8px 15px;border-radius:5px;cursor:pointer;margin:5px;width:100%;">Выйти</button>
+<div id="admin-panel">
+  <p>Админ-панель</p>
+  <button id="settings-btn">Настройки</button>
+  <button id="logout-btn">Выйти</button>
 </div>
 
 <script>
-  // Защита от просмотра в F12
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-  });
-  
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.shiftKey && e.key === 'J') || (e.ctrlKey && e.key === 'U')) {
+  // Защита от F12 (блокировка контекстного меню и DevTools)
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
       e.preventDefault();
-      alert('Доступ запрещен');
+      alert('Доступ запрещён');
     }
   });
-
-  // Хэшированный пароль (SHA-256)
-  const ADMIN_PASSWORD_HASH = "8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4";
 
   // Элементы
   const adminBtn = document.getElementById('admin-btn');
   const adminModal = document.getElementById('admin-modal');
-  const adminPasswordInput = document.getElementById('admin-password');
-  const adminLoginBtn = document.getElementById('admin-login-btn');
-  const adminError = document.getElementById('admin-error');
-  const realAdminPanel = document.getElementById('real-admin-panel');
-  const adminSettingsBtn = document.getElementById('admin-settings-btn');
-  const adminLogoutBtn = document.getElementById('admin-logout-btn');
+  const adminPassword = document.getElementById('admin-password');
+  const loginBtn = document.getElementById('login-btn');
+  const errorMsg = document.getElementById('error-msg');
+  const adminPanel = document.getElementById('admin-panel');
+  const logoutBtn = document.getElementById('logout-btn');
 
-  // Функция для хэширования SHA-256
-  async function sha256(message) {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  }
+  // Пароль (можно поменять)
+  const CORRECT_PASSWORD = "Spdspd25";
 
-  // Открытие модалки по клику на шестерёнку
-  adminBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
+  // Открытие модалки
+  adminBtn.addEventListener('click', () => {
     adminModal.style.display = 'flex';
-    adminError.style.display = 'none';
-    adminPasswordInput.value = '';
+    errorMsg.style.display = 'none';
+    adminPassword.value = '';
   });
 
   // Проверка пароля
-  adminLoginBtn.addEventListener('click', async () => {
-    const inputHash = await sha256(adminPasswordInput.value);
-    if (inputHash === ADMIN_PASSWORD_HASH) {
+  loginBtn.addEventListener('click', () => {
+    if (adminPassword.value === CORRECT_PASSWORD) {
       adminModal.style.display = 'none';
-      realAdminPanel.style.display = 'block';
-      
-      // Сохраняем сессию
+      adminPanel.style.display = 'block';
+      // Сохраняем в sessionStorage
       sessionStorage.setItem('admin-authenticated', 'true');
     } else {
-      adminError.style.display = 'block';
+      errorMsg.style.display = 'block';
     }
   });
 
-  // Проверка аутентификации при загрузке
+  // Проверка при загрузке страницы
   window.addEventListener('load', () => {
     if (sessionStorage.getItem('admin-authenticated') === 'true') {
-      realAdminPanel.style.display = 'block';
+      adminPanel.style.display = 'block';
     }
   });
 
-  // Кнопка "Настройки"
-  adminSettingsBtn.addEventListener('click', () => {
-    alert('Раздел "Настройки" в разработке');
-  });
-
-  // Кнопка "Выйти"
-  adminLogoutBtn.addEventListener('click', () => {
-    realAdminPanel.style.display = 'none';
+  // Выход
+  logoutBtn.addEventListener('click', () => {
+    adminPanel.style.display = 'none';
     sessionStorage.removeItem('admin-authenticated');
   });
-
-  // Закрытие модалки при клике вне её области
-  adminModal.addEventListener('click', (e) => {
-    if (e.target === adminModal) {
-      adminModal.style.display = 'none';
-    }
-  });
 </script>
+</body>
+</html>
 </body>
 </html>
