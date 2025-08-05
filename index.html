@@ -444,5 +444,88 @@
       });
     });
   </script>
+  <!-- Новый функционал с кнопкой подарка и формой -->
+  <div class="gift-button" id="giftButton">
+    🎁
+  </div>
+
+  <div class="gift-popup" id="giftPopup">
+    <h3>Поздравляем! Вы выиграли скидку!</h3>
+    <p id="discountText"></p>
+    <button id="claimButton">Получить скидку</button>
+
+    <div class="form-container" id="formContainer">
+      <input type="text" id="userName" placeholder="Ваше имя" required>
+      <input type="text" id="userContact" placeholder="Телефон или соцсеть" required>
+      <textarea id="userMessage" placeholder="Сообщение" required></textarea>
+      <div>
+        <input type="checkbox" id="promoCodeChecked">
+        <label class="checkbox-label" for="promoCodeChecked">Промокод применен</label>
+      </div>
+      <button id="submitButton">Отправить данные</button>
+    </div>
+  </div>
+
+  <script>
+    function generateDiscount() {
+      return Math.floor(Math.random() * 41) + 5; // Скидка от 5 до 45%
+    }
+
+    document.getElementById('giftButton').addEventListener('click', function() {
+      const discount = generateDiscount();
+      document.getElementById('discountText').textContent = `Вы выиграли скидку ${discount}% на следующую съемку!`;
+      document.getElementById('giftPopup').style.display = 'block';
+    });
+
+    document.getElementById('claimButton').addEventListener('click', function() {
+      document.getElementById('giftPopup').style.display = 'none';
+      document.getElementById('formContainer').style.display = 'block';
+    });
+
+    document.getElementById('submitButton').addEventListener('click', async function() {
+      const name = document.getElementById('userName').value;
+      const contact = document.getElementById('userContact').value;
+      const message = document.getElementById('userMessage').value;
+      const promoCodeChecked = document.getElementById('promoCodeChecked').checked ? 'Да' : 'Нет';
+      
+      if (name && contact && message) {
+        const text = `📩 <b>Новая заявка с сайта</b>\n\n` +
+                     `👤 <b>Имя:</b> ${name}\n` +
+                     `📞 <b>Контакты:</b> ${contact}\n\n` +
+                     `📝 <b>Сообщение:</b>\n${message}\n\n` +
+                     `🎁 <b>Промокод применен:</b> ${promoCodeChecked}`;
+        
+        try {
+          const botToken = '7819746429:AAGMPElulQIPP52CG3eLIwdGQLei68CL61Y';
+          const chatId = '5186331498';
+
+          const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: text,
+              parse_mode: 'HTML'
+            })
+          });
+          
+          if (response.ok) {
+            alert('Данные отправлены! Спасибо, я свяжусь с вами в ближайшее время.');
+            document.getElementById('formContainer').style.display = 'none'; // Скрыть форму
+          } else {
+            alert('Ошибка отправки. Пожалуйста, попробуйте снова.');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Произошла ошибка. Попробуйте позже или свяжитесь другим способом.');
+        }
+      } else {
+        alert('Пожалуйста, заполните все поля.');
+      }
+    });
+  </script>
+  </body>
+</html>
+
 </body>
 </html>
